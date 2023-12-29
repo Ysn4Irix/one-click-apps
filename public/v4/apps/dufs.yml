@@ -1,0 +1,48 @@
+captainVersion: 4
+
+services:
+  '$$cap_appname':
+    caproverExtra:
+      dockerfileLines:
+        - FROM alpine:3.16.2
+        - RUN wget https://github.com/sigoden/dufs/releases/download/$$cap_version/dufs-$$cap_version-$$cap_architecture.tar.gz
+        - RUN tar -xf dufs-$$cap_version-$$cap_architecture.tar.gz
+        - RUN mv dufs /bin/
+        - EXPOSE 5000
+        - CMD ["/bin/dufs", "/bin/data", "-A"]
+      containerHttpPort: '5000'
+    volumes:
+      - '$$cap_appname-data:/bin/data'
+
+caproverOneClickApp:
+  variables:
+    - id: '$$cap_version'
+      label: Dufs Version
+      defaultValue: 'v0.38.0'
+      description: Check out their github page for the valid tags https://github.com/sigoden/dufs/releases
+      validRegex: "/^([^\\s^\\/])+$/"
+    - id: '$$cap_architecture'
+      label: System Host CPU Architecture
+      defaultValue: 'x86_64-unknown-linux-musl'
+      description: Check out their github page for the valid tags like 'x86_64-unknown-linux-musl' for amd64 or 'aarch64-unknown-linux-musl' for arm64 https://github.com/sigoden/dufs/releases
+      validRegex: "/^([^\\s^\\/])+$/"
+  instructions:
+    start: |-
+      Dufs is a distinctive utility file server that supports static serving, uploading, searching, accessing control, webdav...
+      - Serve static files
+      - Download folder as zip file
+      - Upload files and folders (Drag & Drop)
+      - Create/Edit/Search files
+      - Partial responses (Parallel/Resume download)
+      - Access control
+      - Support https
+      - Support webdav
+      - Easy to use with curl
+    end: |-
+      Dufs has been successfully deployed!
+  displayName: Dufs
+  isOfficial: true
+  description: |-
+    Dufs is a distinctive utility file server that supports static serving, uploading, searching, accessing control, webdav...
+    - Serve static files & Download folder as zip file...
+  documentation: See https://github.com/sigoden/dufs
